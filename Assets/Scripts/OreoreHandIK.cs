@@ -15,6 +15,7 @@ public class OreoreHandIK : MonoBehaviour
     float theta_e, phi_s;
 
     Vector3 initialWristPos;
+    Vector3 initialElbowPos;
 
     void Start()
     {
@@ -23,15 +24,18 @@ public class OreoreHandIK : MonoBehaviour
         l_es = (ElbowBone.transform.position - ShoulderBone.transform.position).magnitude;
 
         initialWristPos = WristBone.transform.position;
+        initialElbowPos = ElbowBone.transform.position;
     }
 
     void Update()
     {
         calcBoneStates();
 
-        ElbowBone.transform.position = new Vector3(ElbowBone.transform.position.x, ElbowBone.transform.position.y, y);
+        ElbowBone.transform.position = new Vector3(initialElbowPos.x-(l_es-_l_es), ElbowBone.transform.position.y, y);
         ElbowBone.transform.rotation = Quaternion.AngleAxis(theta_e, new Vector3(0, 1, 0));
+        //ElbowBone.transform.position = initialElbowPos - new Vector3(l_es - _l_es, 0, 0);
         ShoulderBone.transform.rotation = Quaternion.AngleAxis(phi_s, new Vector3(0, 1, 0));
+        WristBone.transform.rotation = ElbowBone.transform.rotation;
     }
 
     void calcBoneStates()
